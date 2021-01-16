@@ -36,7 +36,7 @@
                 <div class="modal-body">Você está prestes a fazer logout e sair da aplicação. Tem certeza disso?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/logout">Logout</a>
                 </div>
             </div>
         </div>
