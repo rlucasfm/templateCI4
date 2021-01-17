@@ -42,8 +42,18 @@ class UserAuth extends BaseController
         }
         else
         {
-            // Redireciona para a página de login sem mensagens, caso seja apenas um GET
-            echo view('login'); 
+            // Caso a requisição seja GET...
+            // Verifica se já está logado
+            if(! empty(session()->get('email')))
+            {
+                // Redireciona para a página principal
+                return redirect()->to('/');
+            }
+            else
+            {
+                // Renderiza para a página de login sem mensagens
+                echo view('login'); 
+            }  
         }        
     }   
     
