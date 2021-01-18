@@ -13,7 +13,9 @@ class Cliente extends Model
     protected $skipValidation   = true;
 
     /** 
-     * @ Irá tratar uma tabela recebida como array e a salvar na base de dados
+     * @method void 
+     * 
+     * Irá tratar uma tabela recebida como array e a salvar na base de dados
     */
     public function importar_array($tabela)
     {
