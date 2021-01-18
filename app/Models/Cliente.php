@@ -8,7 +8,7 @@ class Cliente extends Model
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
-    protected $allowedFields    = ['id', 'nomedocliente', 'cpf/cnpj', 'endereço', 'bairro', 'cidade', 'cep', 'uf', 'telefone1', 'telefone2', 'email1', 'email2'];
+    protected $allowedFields    = ['id', 'nomedocliente', 'cpf/cnpj', 'endereco', 'bairro', 'cidade', 'cep', 'uf', 'telefone1', 'telefone2', 'email1', 'email2'];
     protected $useTimestamps    = false;
     protected $skipValidation   = true;
 
@@ -30,18 +30,20 @@ class Cliente extends Model
         $chaves = array_shift($tabela);     
         $arr_tabela = [];
 
-        // Utiliza o nome das colunas como a chave e adiciona os registros.
+        // Usa os valores das colunas da primeira linha como nome das colunas no DB
+        // Itera sobre cara nome de coluna e o atribui aos valores das linhas
         $key_id = 0;
         foreach($chaves as $chave)
         {
             // Retirar espaços vazios
-            $chave = strtolower(str_replace(" ", "", $chave));
+            $chave = strtolower(str_replace("ç","c",str_replace(" ", "", $chave)));
 
             $coluna = array_column($tabela, $key_id);
             $arr_tabela[$chave] = $coluna;
             $key_id++;
         }
 
+        // Itera cada registro, populando o array na tabela
         $reg_id = 0;
         foreach($arr_tabela[$colunaChave] as $regNome)
         {
@@ -49,7 +51,7 @@ class Cliente extends Model
             $db_cliente = $this ->where($colunaChave, $regNome)
                                 ->first();
 
-            $temFalha = FALSE;
+            $temFalha = FALSE; // Para verificação do sucesso da operação no final
             if(!empty($db_cliente))
             {                
                 $registro = [];
@@ -57,7 +59,7 @@ class Cliente extends Model
                 foreach($chaves as $chave)
                 {
                     // Retirar espaços vazios
-                    $chave = strtolower(str_replace(" ", "", $chave));
+                    $chave = strtolower(str_replace("ç","c",str_replace(" ", "", $chave)));
                     // Verificar se a coluna não é nula
                     if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
                     {
@@ -80,7 +82,7 @@ class Cliente extends Model
                 foreach($chaves as $chave)
                 {
                     // Retirar espaços vazios
-                    $chave = strtolower(str_replace(" ", "", $chave));
+                    $chave = strtolower(str_replace("ç","c",str_replace(" ", "", $chave)));
 
                     // Verificar se a coluna não é nula
                     if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
@@ -104,7 +106,7 @@ class Cliente extends Model
         // Se houve sucesso...
         if(!$temFalha)
         {
-            session()->setFlashdata('successMsg', 'Planilha importada com sucesso');
+            session()->setFlashdata('successMsg', 'Cadastrado com sucesso');
         }
     }
 

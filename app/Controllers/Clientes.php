@@ -88,12 +88,29 @@ class Clientes extends BaseController
     {
         $cliente = new Cliente();
 
-        // Carrega a tabela enviada no POST
-        $nome = $this->request->getPost('nome');
-        $telefone = $this->request->getPost('telefone');
+        $array_cliente = [];
+        // Primeira linha com o nome das colunas conforme o DB
+        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereço','bairro','cidade','cep','uf','telefone1','telefone2','email1','email2'];
 
-        $resposta = $cliente->cadastrar_cliente([$nome, $telefone]);
-        echo $resposta;
+        // Carrega as informações enviadas no POST para o array
+        $post = $this->request->getPost();
+
+        $nomedocliente  = $post['nome'];
+        $cpfcnpj        = $post['cpf'];
+        $endereco       = $post['endereco'];
+        $bairro         = $post['bairro'];
+        $cidade         = $post['cidade'];
+        $cep            = $post['cep'];
+        $uf             = $post['uf'];
+        $telefone1      = $post['telefone1'];
+        $telefone2      = $post['telefone2'];
+        $email1         = $post['email1'];
+        $email2         = $post['email2'];
+
+        $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $email1, $email2];
+
+        $resposta = $cliente->importar_array($array_cliente);
+        return redirect()->to('cadastro');
     }
 
 	//--------------------------------------------------------------------
