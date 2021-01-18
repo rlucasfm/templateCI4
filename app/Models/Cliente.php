@@ -12,57 +12,86 @@ class Cliente extends Model
     protected $useTimestamps    = false;
     protected $skipValidation   = true;
 
+    /** 
+     * @ Irá tratar uma tabela recebida como array e a salvar na base de dados
+    */
     public function importar_array($tabela)
     {
+        // Identifica o nome das colunas, através da primeira linha...
+        // ...e distribui em um novo array associativo.
 
-        // Organiza o Array para ser levado à base de dados
-        $ids = array_column($tabela, 0);
-        $nomes = array_column($tabela, 1);
-        $telefones = array_column($tabela, 2);
+        // Retorna a primeira linha, e a retira da variável parâmetro
+        $chaves = array_shift($tabela);     
+        $arr_tabela = [];
 
-        // Itera entre as células do array 
-        $indice = 0;        
-        foreach($ids as $id){
-            $cliente = [
-                'id' => $id,
-                'nome' => $nomes[$indice],
-                'telefone' => $telefones[$indice]
-            ];
+        // Utiliza o nome das colunas como a chave e adiciona os registros.
+        $key_id = 0;
+        foreach($chaves as $chave)
+        {
+            $coluna = array_column($tabela, $key_id);
+            $arr_tabela[$chave] = $coluna;
+            $key_id++;
+        }
 
-            $indice++;
+        $reg_id = 0;
+        foreach($arr_tabela['nome'] as $regNome)
+        {
             // Verifica a existência de registro igual
-            $db_cliente = $this ->where('nome', $nomes[$indice-1])
-                                ->findAll();
+            $db_cliente = $this ->where('nome', $regNome)
+                                ->first();
 
             $temFalha = FALSE;
             if(!empty($db_cliente))
             {                
+                $registro = [];
                 // Se já existir, atualiza.        
-                try {
-                    $this->update($id, array_slice($cliente, 1, 2)); 
+                foreach($chaves as $chave)
+                {
+                    // Verificar se a coluna não é nula
+                    if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
+                    {
+                        $registro[$chave] = $arr_tabela[$chave][$reg_id]; 
+                    }  
+                }
+
+                try 
+                {
+                    // Registro já existe, e a coluna não é nula, então a atualizaremos
+                    $this->update($db_cliente->id, $registro); 
                 } catch (\Exception $th) {
                     throw new \Exception("Falha ao salvar na base de dados: ".$th->getMessage());
                     $temFalha = TRUE;
-                }                   
+                }
             }
             else
             {
                 // Se não existir nome igual, cadastra no banco.
-                try {
-                    $this->insert($cliente);  
+                foreach($chaves as $chave)
+                {
+                    // Verificar se a coluna não é nula
+                    if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
+                    {
+                        $registro[$chave] = $arr_tabela[$chave][$reg_id]; 
+                    }                    
+                } 
+                
+                try 
+                {
+                    // Registro não existe, e a coluna não é nula, então o adicionaremos
+                    $this->insert($registro);  
                 } catch (\Exception $th) {
                     throw new \Exception("Falha ao salvar na base de dados: ".$th->getMessage());
                     $temFalha = TRUE;
-                }                            
-            }            
-        } // fim do Laço
-        
+                }
+            }  
+
+            $reg_id++;
+        }
         // Se houve sucesso...
         if(!$temFalha)
         {
             session()->setFlashdata('successMsg', 'Planilha importada com sucesso');
         }
-
     }
 
     public function cadastrar_cliente($cliente_array)

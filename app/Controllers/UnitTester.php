@@ -1,13 +1,15 @@
 <?php namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Cliente;
 
 class UnitTester extends BaseController
 {
 	public function index()
 	{
-        $userModel = new User();
-        $userModel->authUser("123@456","123");
+		$cliente = new Cliente();
+		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('C:\Users\richard\Documents\Pasta1.xlsx');
+		$tabela = $spreadsheet->getActiveSheet()->toArray();
+        $cliente->array_tratar($tabela);
 	}
 
 	//--------------------------------------------------------------------
