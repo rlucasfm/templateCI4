@@ -29,7 +29,7 @@ class Clientes extends BaseController
         
         $cliente = new Cliente();
 
-        // Carrega a tabela enviada para o cache
+        // Carrega a tabela enviada no POST
         $tabela = $this->request->getFile('tabela');
         
         // Verifica se não houveram falhas no upload
@@ -67,6 +67,33 @@ class Clientes extends BaseController
         }
 
         return redirect()->to('importar');
+    }
+
+    public function cadastro()
+    {
+        $data = [
+            "title" => "Importação de Tabelas - EudesRo",
+            "name" => session()->get('name'),
+            "menuActiveID" => "clientes",
+            "errorMsg" => session()->get('errorMsg'),
+            "successMsg" => session()->get('successMsg')
+		];
+
+		echo view('templates/header', $data);
+        echo view('clientes/cadastro', $data);
+		echo view('templates/footer', $data);  
+    }
+
+    public function cadastrarDB()
+    {
+        $cliente = new Cliente();
+
+        // Carrega a tabela enviada no POST
+        $nome = $this->request->getPost('nome');
+        $telefone = $this->request->getPost('telefone');
+
+        $resposta = $cliente->cadastrar_cliente([$nome, $telefone]);
+        echo $resposta;
     }
 
 	//--------------------------------------------------------------------

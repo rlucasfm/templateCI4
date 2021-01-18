@@ -77,7 +77,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Clientes:</h6>
-                        <a class="collapse-item" href="#">Cadastro</a>
+                        <a class="collapse-item" href="/clientes/cadastro">Cadastro</a>
                         <a class="collapse-item" href="/clientes/importar">Importar tabela</a>
                     </div>
                 </div>

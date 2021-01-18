@@ -65,4 +65,9 @@ class Cliente extends Model
 
     }
 
+    public function cadastrar_cliente($cliente_array)
+    {
+        return "OK";
+    }
+
 }
