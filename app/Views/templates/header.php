@@ -20,6 +20,11 @@
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- LOAD JQUERY FIRST -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript-->    
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -31,7 +36,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-desktop"></i>
                 </div>
@@ -47,10 +52,10 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item" id="dash">
+                <a class="nav-link" href="/">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Início</span></a>
             </li>
 
             <!-- Divider -->
@@ -62,7 +67,7 @@
             </div>
 
             <!-- Nav Item - Cadastro de clientes -->
-            <li class="nav-item">
+            <li class="nav-item" id="clientes">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -72,8 +77,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Clientes:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Cadastro</a>
-                        <a class="collapse-item" href="utilities-border.html">Importar tabela</a>
+                        <a class="collapse-item" href="#">Cadastro</a>
+                        <a class="collapse-item" href="/clientes/importar">Importar tabela</a>
                     </div>
                 </div>
             </li>
@@ -87,7 +92,7 @@
             </div>
 
             <!-- Nav Item - Gerenciamento de campanhas -->
-            <li class="nav-item">
+            <li class="nav-item" id="campanhas">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
@@ -140,7 +145,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">1</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -169,7 +174,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuário</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= esc($name); ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="/static/img/undraw_profile.svg">
                             </a>
@@ -193,3 +198,40 @@
 
                 </nav>
                 <!-- End of Topbar -->
+
+            <?php if(! empty($successMsg) ): ?>
+                <!-- TOAST DE AVISO - ERRO FLASHDATA -->
+                <!-- Then put toasts within -->
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
+                    <div class="toast-header">
+                        <strong class="mr-auto">Sucesso!</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        <?= esc($successMsg) ?>
+                    </div>
+                </div>
+                <script>
+                    $('.toast').toast('show')
+                </script>
+            <?php endif ?>
+            <?php if(! empty($errorMsg) ): ?>
+                    <!-- TOAST DE AVISO - ERRO FLASHDATA -->
+                    <!-- Then put toasts within -->
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
+                        <div class="toast-header">
+                            <strong class="mr-auto">Houve um erro...</strong>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            <?= esc($errorMsg) ?>
+                        </div>
+                    </div>
+                <script>
+                    $('.toast').toast('show')
+                </script>
+            <?php endif ?>
