@@ -7,9 +7,9 @@ class UnitTester extends BaseController
 	public function index()
 	{
 		$cliente = new Cliente();
-		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('C:\Users\richard\Documents\Pasta1.xlsx');
+		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('C:\Users\richard\Downloads\Modelo_Importação EudesRO_Novo_Modelo 2099.xls');
 		$tabela = $spreadsheet->getActiveSheet()->toArray();
-        $cliente->array_tratar($tabela);
+        $cliente->importar_array($tabela);
 	}
 
 	//--------------------------------------------------------------------

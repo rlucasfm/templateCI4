@@ -8,7 +8,7 @@ class Cliente extends Model
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
-    protected $allowedFields    = ['id', 'nome', 'telefone'];
+    protected $allowedFields    = ['id', 'nomedocliente', 'cpf/cnpj', 'endereço', 'bairro', 'cidade', 'cep', 'uf', 'telefone1', 'telefone2', 'email1', 'email2'];
     protected $useTimestamps    = false;
     protected $skipValidation   = true;
 
@@ -22,6 +22,10 @@ class Cliente extends Model
         // Identifica o nome das colunas, através da primeira linha...
         // ...e distribui em um novo array associativo.
 
+        // Configuração de qual será a coluna chave, usada para verificar a 
+        // unicidade dos registros
+        $colunaChave = "cpf/cnpj";
+
         // Retorna a primeira linha, e a retira da variável parâmetro
         $chaves = array_shift($tabela);     
         $arr_tabela = [];
@@ -30,16 +34,19 @@ class Cliente extends Model
         $key_id = 0;
         foreach($chaves as $chave)
         {
+            // Retirar espaços vazios
+            $chave = strtolower(str_replace(" ", "", $chave));
+
             $coluna = array_column($tabela, $key_id);
             $arr_tabela[$chave] = $coluna;
             $key_id++;
         }
 
         $reg_id = 0;
-        foreach($arr_tabela['nome'] as $regNome)
+        foreach($arr_tabela[$colunaChave] as $regNome)
         {
             // Verifica a existência de registro igual
-            $db_cliente = $this ->where('nome', $regNome)
+            $db_cliente = $this ->where($colunaChave, $regNome)
                                 ->first();
 
             $temFalha = FALSE;
@@ -49,6 +56,8 @@ class Cliente extends Model
                 // Se já existir, atualiza.        
                 foreach($chaves as $chave)
                 {
+                    // Retirar espaços vazios
+                    $chave = strtolower(str_replace(" ", "", $chave));
                     // Verificar se a coluna não é nula
                     if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
                     {
@@ -70,6 +79,9 @@ class Cliente extends Model
                 // Se não existir nome igual, cadastra no banco.
                 foreach($chaves as $chave)
                 {
+                    // Retirar espaços vazios
+                    $chave = strtolower(str_replace(" ", "", $chave));
+
                     // Verificar se a coluna não é nula
                     if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
                     {
