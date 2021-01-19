@@ -72,7 +72,7 @@ class Clientes extends BaseController
     public function cadastro()
     {
         $data = [
-            "title" => "Importação de Tabelas - EudesRo",
+            "title" => "Cadastro manual de clientes - EudesRo",
             "name" => session()->get('name'),
             "menuActiveID" => "clientes",
             "errorMsg" => session()->get('errorMsg'),
