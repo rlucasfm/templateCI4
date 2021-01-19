@@ -9,6 +9,7 @@ class Clientes extends BaseController
 		
     }
     
+    // Página para importação de tabelas
     public function importar()
     {
         $data = [
@@ -24,6 +25,7 @@ class Clientes extends BaseController
 		echo view('templates/footer', $data);
     }
 
+    // Receberá a tabela e levará ao model
     public function upload()
     {        
         
@@ -69,6 +71,7 @@ class Clientes extends BaseController
         return redirect()->to('importar');
     }
 
+    // Página para o cadastro manual
     public function cadastro()
     {
         $data = [
@@ -84,6 +87,7 @@ class Clientes extends BaseController
 		echo view('templates/footer', $data);  
     }
 
+    // Receberá as informações do formulário e levará ao model
     public function cadastrarDB()
     {
         $cliente = new Cliente();
