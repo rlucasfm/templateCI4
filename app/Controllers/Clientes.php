@@ -6,7 +6,7 @@ class Clientes extends BaseController
 {
 	public function index()
 	{
-		
+        return redirect()->to('/');
     }
     
     // Página para importação de tabelas
@@ -94,29 +94,37 @@ class Clientes extends BaseController
 
         $array_cliente = [];
         // Primeira linha com o nome das colunas conforme o DB
-        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereço','bairro','cidade','cep','uf','telefone1','telefone2','email1','email2'];
+        $array_cliente[0] = ['nomedocliente','cpf','endereco','bairro','cidade','cep','uf','telefone1','telefone2','email1','email2'];
 
         // Carrega as informações enviadas no POST para o array
         $post = $this->request->getPost();
+        if(!empty($post))
+        {
+            $nomedocliente  = $post['nome'];
+            $cpfcnpj        = $post['cpf'];
+            $endereco       = $post['endereco'];
+            $bairro         = $post['bairro'];
+            $cidade         = $post['cidade'];
+            $cep            = $post['cep'];
+            $uf             = $post['uf'];
+            $telefone1      = $post['telefone1'];
+            $telefone2      = $post['telefone2'];
+            $email1         = $post['email1'];
+            $email2         = $post['email2'];
 
-        $nomedocliente  = $post['nome'];
-        $cpfcnpj        = $post['cpf'];
-        $endereco       = $post['endereco'];
-        $bairro         = $post['bairro'];
-        $cidade         = $post['cidade'];
-        $cep            = $post['cep'];
-        $uf             = $post['uf'];
-        $telefone1      = $post['telefone1'];
-        $telefone2      = $post['telefone2'];
-        $email1         = $post['email1'];
-        $email2         = $post['email2'];
+            $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $email1, $email2];
 
-        $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $email1, $email2];
-
-        $resposta = $cliente->importar_array($array_cliente);
-        return redirect()->to('cadastro');
+            try {
+                //$resposta = $cliente->importar_array($array_cliente);
+                $cliente->importar_api($array_cliente);
+                //return redirect()->to('cadastro');
+            } catch (\Exception $err) {
+                session()->setFlashdata('errorMsg', $err->getMessage());
+                return redirect()->to('/clientes/cadastro');
+            }
+            
+        }            
     }
-
 	//--------------------------------------------------------------------
 
 }

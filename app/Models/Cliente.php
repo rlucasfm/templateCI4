@@ -124,9 +124,43 @@ class Cliente extends Model
         }
     }
 
-    public function cadastrar_cliente($cliente_array)
-    {
-        return "OK";
+    // INTEGRAÇÃO COM API DELPHI
+    public function importar_api($array_cliente)
+    {              
+        // Retorna a primeira linha, e a retira da variável parâmetro
+        $array_chaves = array_shift($array_cliente);
+        $array_result = [];
+
+        // Transforma o array em um array associativo (Dicionário)
+        $index = 0;
+        foreach($array_chaves as $chave){
+            $array_result[$chave] = $array_cliente[0][$index];
+            $index++;
+        }
+
+        // Instanciar cURL para comunicar com a API
+        $options = [
+            'baseURI' => 'http://localhost:8077/datasnap/rest/TSM/',
+            'timeout'  => 200
+        ];        
+        $curl = \Config\Services::curlrequest($options); 
+
+        // Configurações de cabeçalho para a API Delphi
+        $reqConfig = [            
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]            
+        ];        
+        
+        // Envia um POST para a API e retorna o resultado
+        try {
+            $response = $curl   ->setBody(json_encode(array($array_result)))
+                                ->request('POST', 'Cliente', $reqConfig);
+            echo $response->getBody();  
+        } catch (\Exception $err) {
+            throw new \Exception("Falha ao salvar o cliente: ".$err->getMessage());
+        }                            
     }
 
 }

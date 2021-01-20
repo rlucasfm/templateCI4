@@ -12,7 +12,7 @@ class AuthFilter implements FilterInterface
 
         if(empty($session->get('email')))
         {
-           return redirect()->to('login');
+           return redirect()->to('/login');
         }else
         {
             return $request;
