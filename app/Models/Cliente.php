@@ -58,7 +58,7 @@ class Cliente extends Model
             $registro = [];
             foreach($chaves as $chave)
             {
-                // Retirar espaços vazios
+                // Retirar espaços vazios e acentos
                 $chave = strtolower(str_replace($from_str, $to_str, htmlentities($chave)));
                 // Verificar se a coluna não é nula
                 if(!empty($arr_tabela[$chave][$reg_id]) && $arr_tabela[$chave][$reg_id] != 'NULL')
@@ -124,23 +124,64 @@ class Cliente extends Model
         }
     }
 
-    // INTEGRAÇÃO COM API DELPHI
+    /**
+     * @method string
+     * 
+     * Trata os valores de uma tabela importada do excel/form de cadastro para API
+     */
     public function importar_api($array_cliente)
     {              
         // Retorna a primeira linha, e a retira da variável parâmetro
         $array_chaves = array_shift($array_cliente);
-        $array_result = [];
+        $array_tabela = [];
 
+        // Array limpeza
+        $from_str   = [' ', '&Ccedil;', '-', '&Atilde;', '&Otilde;', '.'];
+        $to_str     = ['', 'c', '', 'a', 'o', ''];
+
+        
         // Transforma o array em um array associativo (Dicionário)
-        $index = 0;
-        foreach($array_chaves as $chave){
-            $array_result[$chave] = $array_cliente[0][$index];
-            $index++;
-        }
+        for($i = 0; $i < count($array_cliente); $i++){
+            $index = 0;
+            foreach($array_chaves as $chave){
+                $chave = strtolower(str_replace($from_str, $to_str, htmlentities($chave)));
 
+                if(!empty($array_cliente[$i][$index]) && $array_cliente[$i][$index] != 'NULL')
+                {
+                    $array_tabela[$i][$chave] = $array_cliente[$i][$index];
+                }
+                else
+                {
+                    if($chave == 'uf'){
+                        $array_tabela[$i][$chave] = "MA";
+                    }
+                    else{
+                        $array_tabela[$i][$chave] = "NULL";
+                    }                    
+                } 
+                
+                $index++;
+            }            
+        } 
+
+        try {
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente', json_encode($array_tabela));     
+            return $response;
+        } catch (\Exception $err) {
+            throw new \Exception($err->getMessage());
+        }                
+    }
+
+    /**
+     * @method string
+     * 
+     * Responsável unicamente por enviar JSON para a API REST DataSnap
+     */
+    private function enviar_api($uri, $postMethod, $json)
+    {
         // Instanciar cURL para comunicar com a API
         $options = [
-            'baseURI' => 'http://localhost:8077/datasnap/rest/TSM/',
+            'baseURI' => $uri,
             'timeout'  => 200
         ];        
         $curl = \Config\Services::curlrequest($options); 
@@ -155,12 +196,12 @@ class Cliente extends Model
         
         // Envia um POST para a API e retorna o resultado
         try {
-            $response = $curl   ->setBody(json_encode(array($array_result)))
-                                ->request('POST', 'Cliente', $reqConfig);
-            echo $response->getBody();  
+            $response = $curl   ->setBody($json)
+                                ->request('POST', $postMethod, $reqConfig);
+            return $response->getBody();  
         } catch (\Exception $err) {
-            throw new \Exception("Falha ao salvar o cliente: ".$err->getMessage());
-        }                            
+            throw new \Exception("Falha ao enviar para API: ".$err->getMessage());
+        }    
     }
 
 }

@@ -60,7 +60,8 @@ class Clientes extends BaseController
             // Envia a tabela para o modelo, que irá levá-la ao DB
             if(isset($array)){
                 try {
-                    $cliente->importar_array($array);
+                    $cliente->importar_api($array);
+                    session()->setFlashdata('successMsg', 'Tabela importado com sucesso');
                 } catch (\Exception $err) {
                     session()->setFlashdata('errorMsg', $err->getMessage());
                 }                
@@ -68,7 +69,7 @@ class Clientes extends BaseController
             
         }
 
-        return redirect()->to('importar');
+        return redirect()->to('/clientes/importar');
     }
 
     // Página para o cadastro manual
@@ -94,7 +95,7 @@ class Clientes extends BaseController
 
         $array_cliente = [];
         // Primeira linha com o nome das colunas conforme o DB
-        $array_cliente[0] = ['nomedocliente','cpf','endereco','bairro','cidade','cep','uf','telefone1','telefone2','email1','email2'];
+        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereco','bairro','cidade','cep','uf','telefone1','telefone2','email','email2'];
 
         // Carrega as informações enviadas no POST para o array
         $post = $this->request->getPost();
@@ -116,13 +117,18 @@ class Clientes extends BaseController
 
             try {
                 //$resposta = $cliente->importar_array($array_cliente);
-                $cliente->importar_api($array_cliente);
-                //return redirect()->to('cadastro');
+                $cliente->importar_api($array_cliente);    
+                $sucesso = TRUE;            
             } catch (\Exception $err) {
                 session()->setFlashdata('errorMsg', $err->getMessage());
-                return redirect()->to('/clientes/cadastro');
+                $sucesso = FALSE;
             }
-            
+
+            if($sucesso){
+                session()->setFlashdata('successMsg', 'Cadastro enviado com sucesso');  
+            }
+
+            return redirect()->to('/clientes/cadastro');
         }            
     }
 	//--------------------------------------------------------------------
