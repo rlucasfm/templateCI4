@@ -131,6 +131,8 @@ class Cliente extends Model
      */
     public function importar_api($array_cliente)
     {              
+        $cod_banco = session()->get('cod_banco');
+
         // Retorna a primeira linha, e a retira da variável parâmetro
         $array_chaves = array_shift($array_cliente);
         $array_tabela = [];
@@ -165,7 +167,7 @@ class Cliente extends Model
         } 
 
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente', json_encode($array_tabela));     
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, json_encode($array_tabela));     
             return $response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());

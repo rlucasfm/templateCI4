@@ -24,7 +24,8 @@ class User extends Model
                 // Armazena as informações importantes na sessão
                 $sessionData = [
                     "email" => $email,
-                    "name" => $user->name
+                    "name" => $user->name,
+                    "cod_banco" => $user->cod_banco
                 ];
     
                 $session = session();
