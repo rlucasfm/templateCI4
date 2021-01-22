@@ -167,7 +167,7 @@ class Cliente extends Model
         } 
 
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, json_encode($array_tabela));     
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, json_encode($array_tabela));                
             return $response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());

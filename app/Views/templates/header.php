@@ -20,20 +20,25 @@
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- CSS MAIN particular -->
+    <link href="/static/css/main.css" rel="stylesheet">
+
     <!-- LOAD JQUERY FIRST -->
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <!-- Bootstrap core JavaScript-->    
     <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin própria para Mascaras -->
+    <script src="/static/js/mask.js"></script>
 
 </head>
 
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">

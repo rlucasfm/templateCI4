@@ -1,5 +1,8 @@
 <!-- Begin Page Content -->
 <div class="container">
+<div class='s-pre-con'>
+    <img src="/static/img/loader.gif" alt="Loading cool animation">
+</div>
 
 <form action="cadastrarDB" method="POST">    
     <div class="card">
@@ -16,6 +19,7 @@
                     <div class="form-group">
                         <label for="nome">CPF / CNPJ</label>
                         <input type="text" name="cpf" id="cpf" class="form-control">
+                        <small>Apenas números</small>
                     </div>
                 </div>                              
             </div> 
@@ -74,10 +78,19 @@
                     </div>
                 </div>
             </div>        
-            <button type="submit" class="btn btn-primary mt-4">Cadastrar</button>
+            <button type="submit" class="btn btn-primary mt-4" id="btnSubmit">Cadastrar</button>
         </div>
     </div>
 </form>                 
 
 </div>
+<script>
+    $('#btnSubmit').on('click', (event) => {
+        $('.s-pre-con').show();
+    })
+</script>
+<script>
+    $('#cpf').attr("onkeypress", "mascara(this, aplicarCpf2)");
+    $('#cpf').attr("maxlength", "11");
+</script>
 <!-- /.container -->
