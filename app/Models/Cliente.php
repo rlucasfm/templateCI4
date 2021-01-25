@@ -153,15 +153,15 @@ class Cliente extends Model
                     $array_tabela[$i][$chave] = $array_cliente[$i][$index];
                 }
                 else
-                {
+                {                    
                     if($chave == 'uf'){
                         $array_tabela[$i][$chave] = "MA";
                     }
                     else{
                         $array_tabela[$i][$chave] = "NULL";
                     }                    
-                } 
-                
+                }             
+
                 $index++;
             }            
         } 
