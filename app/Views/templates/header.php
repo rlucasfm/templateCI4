@@ -93,20 +93,20 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Campanhas
+                Listas
             </div>
 
-            <!-- Nav Item - Gerenciamento de campanhas -->
-            <li class="nav-item" id="campanhas">
+            <!-- Nav Item - Gerenciamento de Listas -->
+            <li class="nav-item" id="listas">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Gerenciar campanhas</span>
+                    <span>Gerenciar Listas</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Campanhas:</h6>
-                        <a class="collapse-item" href="login.html">Nova campanha</a>
+                        <h6 class="collapse-header">Listas:</h6>
+                        <a class="collapse-item" href="/Listas/novaLista">Nova Lista</a>
                         <a class="collapse-item" href="register.html">Campanhas ativas</a>
                     </div>
                 </div>
@@ -205,9 +205,9 @@
                 <!-- End of Topbar -->
 
             <?php if(! empty($successMsg) ): ?>
-                <!-- TOAST DE AVISO - ERRO FLASHDATA -->
+                <!-- TOAST DE AVISO - SUCCESS FLASHDATA -->
                 <!-- Then put toasts within -->
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
+                <div class="toast" role="alert" id="toastSuccess" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
                     <div class="toast-header">
                         <strong class="mr-auto">Sucesso!</strong>
                         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -219,13 +219,13 @@
                     </div>
                 </div>
                 <script>
-                    $('.toast').toast('show')
+                    $('#toastSuccess').toast('show')
                 </script>
             <?php endif ?>
             <?php if(! empty($errorMsg) ): ?>
                     <!-- TOAST DE AVISO - ERRO FLASHDATA -->
                     <!-- Then put toasts within -->
-                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
+                    <div class="toast" role="alert" id="toastError" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
                         <div class="toast-header">
                             <strong class="mr-auto">Houve um erro...</strong>
                             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -237,6 +237,6 @@
                         </div>
                     </div>
                 <script>
-                    $('.toast').toast('show')
+                    $('#toastError').toast('show')
                 </script>
             <?php endif ?>

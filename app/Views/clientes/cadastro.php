@@ -65,6 +65,32 @@
                 </div>
             </div> 
             <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="telefone3">Telefone 3</label>
+                        <input type="text" name="telefone3" id="telefone3" class="form-control" placeholder="(99) 99999-9999">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="telefone4">Telefone 4</label>
+                        <input type="text" name="telefone4" id="telefone4" class="form-control" placeholder="(99) 99999-9999">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="telefone5">Telefone 5</label>
+                        <input type="text" name="telefone5" id="telefone5" class="form-control" placeholder="(99) 99999-9999">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="telefone6">Telefone 6</label>
+                        <input type="text" name="telefone6" id="telefone6" class="form-control" placeholder="(99) 99999-9999">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="email1">Email 1</label>

@@ -95,25 +95,29 @@ class Clientes extends BaseController
 
         $array_cliente = [];
         // Primeira linha com o nome das colunas conforme o DB
-        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereco','bairro','cidade','cep','uf','telefone1','telefone2','email','email2'];
+        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereco','bairro','cidade','cep','uf','telefone1','telefone2', 'telefone3', 'telefone4', 'telefone5', 'telefone6','email','email2'];
 
         // Carrega as informações enviadas no POST para o array
         $post = $this->request->getPost();
         if(!empty($post))
         {
-            $nomedocliente  = $post['nome'];
-            $cpfcnpj        = $post['cpf'];
-            $endereco       = $post['endereco'];
-            $bairro         = $post['bairro'];
-            $cidade         = $post['cidade'];
-            $cep            = $post['cep'];
-            $uf             = $post['uf'];
-            $telefone1      = $post['telefone1'];
-            $telefone2      = $post['telefone2'];
-            $email1         = $post['email1'];
-            $email2         = $post['email2'];
+            $nomedocliente  = isset($post['nome'])      ? $post['nome'] : "null";
+            $cpfcnpj        = isset($post['cpf'])       ? $post['cpf'] : "null";
+            $endereco       = isset($post['endereco'])  ? $post['endereco'] : "null";
+            $bairro         = isset($post['bairro'])    ? $post['bairro'] : "null";
+            $cidade         = isset($post['cidade'])    ? $post['cidade'] : "null";
+            $cep            = isset($post['cep'])       ? $post['cep'] : "null";
+            $uf             = isset($post['uf'])        ? $post['uf'] : "null";
+            $telefone1      = isset($post['telefone1']) ? $post['telefone1'] : "null";
+            $telefone2      = isset($post['telefone2']) ? $post['telefone2'] : "null";
+            $telefone3      = isset($post['telefone3']) ? $post['telefone3'] : "null";
+            $telefone4      = isset($post['telefone4']) ? $post['telefone4'] : "null";
+            $telefone5      = isset($post['telefone5']) ? $post['telefone5'] : "null";
+            $telefone6      = isset($post['telefone6']) ? $post['telefone6'] : "null";
+            $email1         = isset($post['email1'])    ? $post['email1'] : "null";
+            $email2         = isset($post['email2'])    ? $post['email2'] : "null";
 
-            $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $email1, $email2];
+            $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $telefone3, $telefone4, $telefone5, $telefone6, $email1, $email2];
 
             try {
                 //$resposta = $cliente->importar_array($array_cliente);
