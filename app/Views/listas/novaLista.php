@@ -50,7 +50,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="nomeLista">Nome da lista</label>
-                                <input type="text" class="form-control" name="nomeLista" id="nomeLista" aria-describedby="nomeListaHelp">
+                                <input type="text" class="form-control" name="nomeLista" id="nomeLista" value="nome da lista" aria-describedby="nomeListaHelp">
                                 <small id="nomeListaHelp" class="form-text text-muted">Aqui vai o nome da sua lista</small>
                             </div>
                         </div>    
@@ -69,14 +69,14 @@
                         <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="diasVencimento">Dias do vencimento</label>
-                                    <input type="number" class="form-control" name="diasVencimento" id="diasVencimento" aria-describedby="diasVencimentoHelp">
+                                    <input type="number" class="form-control" name="diasVencimento" id="diasVencimento" value="-7" aria-describedby="diasVencimentoHelp">
                                     <small id="diasVencimentoHelp" class="form-text text-muted">Quantos dias antes ou depois do vencimento</small>
                                 </div>
                             </div>   
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="horaDisparo">Hora do disparo</label>
-                                    <input type="time" class="form-control" name="horaDisparo" id="horaDisparo" aria-describedby="horaDisparoHelp">
+                                    <input type="time" class="form-control" name="horaDisparo" id="horaDisparo" value="00:00" value aria-describedby="horaDisparoHelp">
                                     <small id="horaDisparoHelp" class="form-text text-muted">Que horário a mensagem será enviada</small>
                                 </div>
                             </div>
@@ -91,6 +91,7 @@
                 <!-- </form> -->                                           
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-dark mr-auto" data-toggle="modal" data-target="#modalConfirmação">Apagar lista</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <input type="hidden" name="idLista" id="idLista" value="0">
                 <button type="submit" class="btn btn-primary">Salvar lista</button>
@@ -98,6 +99,27 @@
                 </form>
         </div>
     </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO -->
+<div class="modal fade" id="modalConfirmação" tabindex="-2" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Você tem certeza?</h5>
+        <button type="button" class="close" data-dismiss="#modalConfirmação" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que pretende apagar esta lista?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="apagarLista">Confirmar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -131,6 +153,28 @@
                 type: "post",
                 url: "/Listas/cadastrar",
                 data: {id: id, nomeLista: nomeLista, tipoEmail: tipoEmail, diasVencimento: diasVencimento, horaDisparo: horaDisparo, mensagemLista: mensagemLista},                
+                success: function(data){
+                    $('.s-pre-con').hide(); 
+                    location.reload(true);                   
+                },
+                error: function(){
+                    $('.s-pre-con').hide();                      
+                },
+                timeout: 5000
+            })
+        })
+
+        $('#apagarLista').on("click", () => {
+            $('#modalGerenciarLista').modal('hide');
+            $('#modalConfirmação').modal('hide');
+            $('.s-pre-con').show();
+            
+            const id = $('#idLista').val();
+
+            $.ajax({
+                type: "post",
+                url: "/Listas/apagar",
+                data: {id: id},
                 success: function(data){
                     $('.s-pre-con').hide(); 
                     location.reload(true);                   

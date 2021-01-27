@@ -9,6 +9,11 @@ class Listas extends BaseController
 
 	}
 
+	/**
+	 * @method void
+	 * 
+	 * Controller responsável por manipular a página (view) de gerenciamento de listas
+	 */
     public function novaLista(){
 		$lista = new Lista();
 		$cod_banco = session()->get('cod_banco');
@@ -19,7 +24,7 @@ class Listas extends BaseController
 			"menuActiveID" 	=> "listas",
 			"errorMsg" 		=> session()->get('errorMsg'),
 			"successMsg" 	=> session()->get('successMsg'),
-			"listas"		=> $lista->listarListas($cod_banco)						
+			"listas"		=> $lista->listarAPI($cod_banco)						
 		];
 
 		echo view('templates/header', $data);
@@ -27,6 +32,11 @@ class Listas extends BaseController
 		echo view('templates/footer', $data);	
 	}
 	
+	/**
+	 * @method void
+	 * 
+	 * Controller responsável por receber as informações do formulário e enviar para o model (Atualizar e Registrar)
+	 */
 	public function cadastrar()
 	{
 		$lista = new Lista();
@@ -38,8 +48,8 @@ class Listas extends BaseController
 		if($lista_dados['id'] == '0')
 		{
 			try {
-				$response = $lista->cadastrar($lista_dados);
-				session()->setFlashdata('successMsg', 'Lista cadastrada com sucesso');
+				$response = $lista->cadastrarAPI($lista_dados);
+				session()->setFlashdata('successMsg', $response);
 			} catch (\Exception $err) {
 				session()->setFlashdata('errorMsg', 'Houve um erro... '.$err->getMessage());
 			}				
@@ -47,14 +57,32 @@ class Listas extends BaseController
 		else
 		{
 			try {
-				$response = $lista->atualizar($lista_dados);
-				session()->setFlashdata('successMsg', 'Lista atualizada com sucesso');
+				$response = $lista->atualizarAPI($lista_dados);
+				session()->setFlashdata('successMsg', $response);
 			} catch (\Exception $err) {
 				session()->setFlashdata('errorMsg', 'Houve um erro... '.$err->getMessage());
 			}	
 		}		
 
 		
+	}
+
+	/**
+	 * @method void
+	 * 
+	 * Controller responsável por enviar para o model pedidos de exclusão
+	 */
+	public function apagar()
+	{
+		$lista 		= new Lista();		
+		$id_lista 	= $this->request->getPost('id');
+
+		try {
+			$response = $lista->apagarAPI($id_lista);
+			session()->setFlashdata('successMsg', $response);
+		} catch (\Exception $err) {
+			session()->setFlashdata('errorMsg', 'Houve um erro... '.$err->getMessage());
+		}
 	}
 	//--------------------------------------------------------------------
 

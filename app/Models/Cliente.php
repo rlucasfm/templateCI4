@@ -105,6 +105,7 @@ class Cliente extends Model
                 $db_cliente = $this ->where($colunaChave, $regNome)
                                     ->first();
                 try {
+                    // Insere a operação relacionando-a ao cliente
                     $operacao->inserir_operacoes($registro, $db_cliente->id, $key_operacao); 
                 } catch (\Exception $th) {
                     throw new \Exception("Falha ao salvar as operações: ".$th->getMessage());
@@ -179,7 +180,7 @@ class Cliente extends Model
      * 
      * Responsável unicamente por enviar JSON para a API REST DataSnap
      */
-    private function enviar_api($uri, $postMethod, $json)
+    private function enviar_api($uri, $serverMethod, $json)
     {
         // Instanciar cURL para comunicar com a API
         $options = [
@@ -199,7 +200,7 @@ class Cliente extends Model
         // Envia um POST para a API e retorna o resultado
         try {
             $response = $curl   ->setBody($json)
-                                ->request('POST', $postMethod, $reqConfig);
+                                ->request('POST', $serverMethod, $reqConfig);
             return $response->getBody();  
         } catch (\Exception $err) {
             throw new \Exception("Falha ao enviar para API: ".$err->getMessage());
