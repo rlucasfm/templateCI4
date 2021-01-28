@@ -11,7 +11,7 @@ class UnitTester extends BaseController
 		// $tabela = $spreadsheet->getActiveSheet()->toArray();
 
 		echo "<pre>";
-		echo($lista->apagarAPI(2));
+		var_dump($lista->listarAPI(1000));
 		echo "</pre>";		
 		
 	}

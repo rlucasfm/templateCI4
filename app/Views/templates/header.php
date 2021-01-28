@@ -106,8 +106,7 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Listas:</h6>
-                        <a class="collapse-item" href="/Listas/novaLista">Nova Lista</a>
-                        <a class="collapse-item" href="register.html">Campanhas ativas</a>
+                        <a class="collapse-item" href="/Listas/novaLista">Gerenciamento de Listas</a>                        
                     </div>
                 </div>
             </li>
