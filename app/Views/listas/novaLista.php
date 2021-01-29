@@ -23,7 +23,7 @@
                         <tr>                                                     
                             <td><?= esc($lista->nome) ?></td>
                             <td style="text-transform: uppercase"><?= esc($lista->tipocampanha) ?></td>
-                            <td><?= esc($lista->diasvenc) ?></td>
+                            <td><?= esc(abs($lista->diasvenc)) ?></td>
                             <td><?= esc($lista->horadisparo) ?></td>
                             <td><button type="button" class="btn btn-success" id="btnEditar<?= esc($lista->id); ?>">Editar</button></td>
                         </tr>                        
@@ -57,8 +57,13 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="diasVencimento">Dias do vencimento</label>
-                                <input type="number" class="form-control" name="diasVencimento" id="diasVencimento" value="-7" aria-describedby="diasVencimentoHelp">
-                                <small id="diasVencimentoHelp" class="form-text text-muted">Quantos dias antes ou depois do vencimento</small>
+                                <input type="number" class="form-control" name="diasVencimento" id="diasVencimento" value="7" min="0">
+                                <div>
+                                    <input type="radio" name="relatVenc" id="antesVenc" value="antes" checked>
+                                    <label for="relatVenc">Antes do vencimento</label>
+                                    <input type="radio" name="relatVenc" id="aposVenc" value="apos">
+                                    <label for="aposVenc">Após o vencimento</label>
+                                </div>                                
                             </div>
                         </div>   
                         <div class="col-sm-3">
@@ -97,6 +102,12 @@
                                 <textarea name="mensagemLista" class="form-control" id="mensagemLista" cols="30" rows="5">Escreva aqui o texto do SMS que será enviado para o cliente</textarea>
                             </div>
                         </div>                    
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <small>Use os seguintes identificadores para personalizar a sua mensagem: </small><br>
+                            <small><b>Número da operação</b>: $numeroop$ / <b>Nome da operação</b>: $nomeop$ / <b>Data de vencimento</b>: $datavenc$ / <b>Valor da operação</b>: $valorop$ / <b>Nome do Cliente</b>: $nomecliente$ / <b>Nome do aluno</b>: $nomealuno$ / <b>Primeiro nome do cliente</b>: $pnomecliente$ / <b>Primeiro nome do aluno</b>: $pnomealuno$</small>
+                        </div>
                     </div>
                 <!-- </form> -->                                           
             </div>
@@ -140,11 +151,19 @@
             $('#modalGerenciarLista').modal('show');
             $('#nomeLista').val('<?= esc($lista->nome); ?>');
             $('#tipoEmail').val('<?= esc($lista->tipoemail); ?>').change();
-            $('#diasVencimento').val(<?= esc($lista->diasvenc); ?>);
-            $('#horaDisparo').val('<?= esc($lista->horadisparo); ?>');
-            $('#mensagemLista').val('<?= esc($lista->mensagem); ?>');
+            $('#diasVencimento').val(<?= esc(abs($lista->diasvenc)); ?>);
+            $('#horaDisparo').val('<?= esc($lista->horadisparo); ?>');            
+            $('#mensagemLista').val('<?= esc(html_entity_decode(preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', $lista->mensagem))); ?>');
             $('#idLista').val('<?= esc($lista->id); ?>');
             $('#tipoCampanha').val('<?= esc($lista->tipocampanha); ?>').change();
+            <?php 
+            if($lista->diasvenc < 0){
+                $relatVenc = "apos";
+            }else{
+                $relatVenc = "antes";
+            }
+            ?>
+            $('input:radio[name="relatVenc"]').filter('[value="<?= esc($relatVenc); ?>"]').attr('checked', true);                          
         })
         <?php endforeach ?>
 
@@ -155,11 +174,15 @@
             
             const id                =  $('#idLista').val();
             const nomeLista         =  $('#nomeLista').val();
-            const tipoEmail         =  $('#tipoEmail').val();
-            const diasVencimento    =  $('#diasVencimento').val();
+            const tipoEmail         =  $('#tipoEmail').val();            
             const horaDisparo       =  $('#horaDisparo').val();
             const mensagemLista     =  $('#mensagemLista').val();
             const tipoCampanha      =  $('#tipoCampanha').val();
+            let diasVencimento      =  $('#diasVencimento').val();
+                    
+            if($('#aposVenc').is(':checked')){
+                diasVencimento = -diasVencimento;                
+            }   
 
             $.ajax({
                 type: "post",
