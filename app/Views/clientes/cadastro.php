@@ -103,7 +103,48 @@
                         <input type="email" name="email2" id="email2" class="form-control" placeholder="email@dominio.com">
                     </div>
                 </div>
-            </div>        
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="nrop">Número da Operação</label>
+                        <input type="text" name="nrop" id="nrop" class="form-control" placeholder="00000">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="tipoop">Tipo da Operação</label>
+                        <input type="text" name="tipoop" id="tipoop" class="form-control" placeholder="MENSALIDADE">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="datavenc">Data de Vencimento</label>
+                        <input type="date" name="datavenc" id="datavenc" class="form-control">
+                    </div>
+                </div>
+            </div>   
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="valorop">Valor Nominal</label>
+                        <input type="number" name="valorop" id="valorop" class="form-control" step="0.01" min="0">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="condnegociais">Nome do aluno</label>
+                        <input type="text" name="condnegociais" id="condnegociais" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="garantiasreais">Ano/Série</label>
+                        <input type="text" name="garantiasreais" id="garantiasreais" class="form-control">
+                    </div>
+                </div>
+            </div>     
             <button type="submit" class="btn btn-primary mt-4" id="btnSubmit">Cadastrar</button>
         </div>
     </div>

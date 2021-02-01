@@ -25,6 +25,38 @@ class Clientes extends BaseController
 		echo view('templates/footer', $data);
     }
 
+    // Página para o cadastro manual
+    public function cadastro()
+    {
+        $data = [
+            "title" => "Cadastro manual de clientes - EudesRo",
+            "name" => session()->get('name'),
+            "menuActiveID" => "clientes",
+            "errorMsg" => session()->get('errorMsg'),
+            "successMsg" => session()->get('successMsg')
+        ];
+
+        echo view('templates/header', $data);
+        echo view('clientes/cadastro', $data);
+        echo view('templates/footer', $data);  
+    }
+
+    // Página para visualização/edição de registros
+    public function listarClientes()
+    {
+        $data = [
+            "title" => "Listar clientes - EudesRo",
+            "name" => session()->get('name'),
+            "menuActiveID" => "clientes",
+            "errorMsg" => session()->get('errorMsg'),
+            "successMsg" => session()->get('successMsg')
+		];
+
+		echo view('templates/header', $data);
+        echo view('clientes/listar', $data);
+		echo view('templates/footer', $data);
+    }
+
     // Receberá a tabela e levará ao model
     public function upload()
     {        
@@ -70,23 +102,7 @@ class Clientes extends BaseController
         }
 
         return redirect()->to('/clientes/importar');
-    }
-
-    // Página para o cadastro manual
-    public function cadastro()
-    {
-        $data = [
-            "title" => "Cadastro manual de clientes - EudesRo",
-            "name" => session()->get('name'),
-            "menuActiveID" => "clientes",
-            "errorMsg" => session()->get('errorMsg'),
-            "successMsg" => session()->get('successMsg')
-		];
-
-		echo view('templates/header', $data);
-        echo view('clientes/cadastro', $data);
-		echo view('templates/footer', $data);  
-    }
+    }  
 
     // Receberá as informações do formulário e levará ao model
     public function cadastrarDB()
@@ -95,12 +111,18 @@ class Clientes extends BaseController
 
         $array_cliente = [];
         // Primeira linha com o nome das colunas conforme o DB
-        $array_cliente[0] = ['nomedocliente','cpf/cnpj','endereco','bairro','cidade','cep','uf','telefone1','telefone2', 'telefone3', 'telefone4', 'telefone5', 'telefone6','email','email2'];
+        $array_cliente[0] = [
+            'nomedocliente','cpf/cnpj','endereco','bairro','cidade','cep','uf',
+            'telefone1','telefone2', 'telefone3', 'telefone4', 'telefone5', 
+            'telefone6','email','email2', 'nroperacao', 'nomeoperacao', 'dtvencimento',
+            'valoroperacao', 'observacoes', 'garantias'
+        ];
 
         // Carrega as informações enviadas no POST para o array
         $post = $this->request->getPost();
         if(!empty($post))
         {
+            // Info Cliente
             $nomedocliente  = isset($post['nome'])      ? $post['nome'] : "null";
             $cpfcnpj        = isset($post['cpf'])       ? $post['cpf'] : "null";
             $endereco       = isset($post['endereco'])  ? $post['endereco'] : "null";
@@ -117,7 +139,20 @@ class Clientes extends BaseController
             $email1         = isset($post['email1'])    ? $post['email1'] : "null";
             $email2         = isset($post['email2'])    ? $post['email2'] : "null";
 
-            $array_cliente[1] = [$nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, $telefone1, $telefone2, $telefone3, $telefone4, $telefone5, $telefone6, $email1, $email2];
+            // Info da Operação
+            $numeroop       = isset($post['nrop'])              ? $post['nrop'] : "null";
+            $tipoop         = isset($post['tipoop'])            ? $post['tipoop'] : "null";
+            $datavenc       = isset($post['datavenc'])          ? $post['datavenc'] : "null";
+            $valorop        = isset($post['valorop'])           ? $post['valorop'] : "null";
+            $condnegociais  = isset($post['condnegociais'])     ? $post['condnegociais'] : "null";
+            $garantiasreais = isset($post['garantiasreais'])    ? $post['garantiasreais'] : "null";
+
+            $array_cliente[1] = [
+                $nomedocliente, $cpfcnpj, $endereco, $bairro, $cidade, $cep, $uf, 
+                $telefone1, $telefone2, $telefone3, $telefone4, $telefone5, 
+                $telefone6, $email1, $email2, $numeroop, $tipoop, $datavenc,
+                $valorop, $condnegociais, $garantiasreais
+            ];
 
             try {
                 //$resposta = $cliente->importar_array($array_cliente);
