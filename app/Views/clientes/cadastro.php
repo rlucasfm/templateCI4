@@ -6,7 +6,9 @@
 
 <form action="cadastrarDB" method="POST">    
     <div class="card">
-        <div class="card-body">
+        <div class="card-body">        
+            <h4>Informações do Cliente</h4>
+            <hr> 
             <div class="row">
                 <div class="col-sm-8">
                     <div class="form-group">
@@ -104,7 +106,9 @@
                     </div>
                 </div>
             </div>
-            <hr>
+            <br><br>
+            <h4>Informações de Operação</h4>
+            <hr>            
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
