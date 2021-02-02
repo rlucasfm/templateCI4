@@ -168,7 +168,7 @@ class Cliente extends Model
         } 
 
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, json_encode($array_tabela));                
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, 'POST', json_encode($array_tabela));                
             return $response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());
@@ -176,11 +176,27 @@ class Cliente extends Model
     }
 
     /**
+     * @method object
+     * 
+     * Recupera uma lista de objetos de clientes da API 
+     */
+    public function listarAPI($cod_banco)
+    {
+        try {
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, 'GET');
+            $lista_array = json_decode($response)->result;
+            return($lista_array[0]);
+        } catch (\Exception $err) {
+            throw new \Exception($err->getMessage());
+        }
+    }
+
+    /**
      * @method string
      * 
      * Responsável unicamente por enviar JSON para a API REST DataSnap
      */
-    private function enviar_api($uri, $serverMethod, $json)
+    private function enviar_api($uri, $serverMethod, $requestType, $json = NULL)
     {
         // Instanciar cURL para comunicar com a API
         $options = [
@@ -199,8 +215,13 @@ class Cliente extends Model
         
         // Envia um POST para a API e retorna o resultado
         try {
-            $response = $curl   ->setBody($json)
-                                ->request('POST', $serverMethod, $reqConfig);
+            if(!empty($json)){
+                $response = $curl   ->setBody($json)
+                                    ->request($requestType, $serverMethod, $reqConfig);
+            }else{
+                $response = $curl->request($requestType, $serverMethod, $reqConfig); 
+            }
+            
             return $response->getBody();  
         } catch (\Exception $err) {
             throw new \Exception("Falha ao enviar para API: ".$err->getMessage());

@@ -44,12 +44,24 @@ class Clientes extends BaseController
     // Página para visualização/edição de registros
     public function listarClientes()
     {
+        $cliente = new Cliente();
+        $cod_banco = session()->get('cod_banco');
+
+        try {
+            $operacoes = $cliente->listarAPI($cod_banco);
+        } catch (\Exception $err) {
+            session()->setFlashdata('errorMsg', $err->getMessage());
+            return redirect()->to('/');
+        }
+    
+
         $data = [
             "title" => "Listar clientes - EudesRo",
             "name" => session()->get('name'),
             "menuActiveID" => "clientes",
             "errorMsg" => session()->get('errorMsg'),
-            "successMsg" => session()->get('successMsg')
+            "successMsg" => session()->get('successMsg'),
+            "operacoes" => $operacoes
 		];
 
 		echo view('templates/header', $data);
