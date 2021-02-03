@@ -34,7 +34,7 @@
 
 </div>
 
-<div class="toast" role="alert" id="toastEditOp" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:15">
+<div class="toast" role="alert" id="toastEditOp" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 15px; left:50%; z-index:10">
     <div class="toast-header">
         <strong class="mr-auto">Nenhuma operação selecionada</strong>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -57,7 +57,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="numberSelect"></div>
+                <small class='text-muted'><div class="numberSelect"></div></small>
                 <hr>
                 <div class="row">
                     <div class="col">
@@ -81,10 +81,31 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" id="btnSalvarVenc">Salvar alterações</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationSave">Salvar alterações</button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationSave" tabindex="-1" aria-labelledby="confirmationSaveLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationSaveLabel">Tem certeza?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">      
+        <p>Tem certeza que quer alterar a(s) <b class="numberSelect"></b>? </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnSalvarVenc" data-dismiss="modal">Confirmar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -92,13 +113,13 @@
 let tableData = [
     <?php foreach($operacoes as $operacao): ?>
         {
-            'id': '<?= esc($operacao->cliente) ?><?= esc($operacao->nroperacao) ?><?= esc($operacao->remessa) ?>',
+            'id': '<?= esc($operacao->nroperacao) ?>nrc<?= esc($operacao->remessa) ?>nrc<?= esc($operacao->cliente) ?>',
             'check': '',
             'operacao': '<?= esc($operacao->tipooperacao) ?>',
             'datavencto': '<?= esc($operacao->datavencto) ?>',
             'valornominal': '<?= esc($operacao->valornominal) ?>',
             'nome': '<?= esc($operacao->nome) ?>', 
-            'cpf': '<?= esc($operacao->tipooperacao) ?>'
+            'cpf': '<?= esc($operacao->cpf) ?>'
         },
     <?php endforeach ?>
 ]
@@ -179,7 +200,7 @@ function buildTable(){
     for (var i = 1 in tabList) {
         //Keep in mind we are using "Template Litterals to create rows"
         var row =  `<tr>
-                    <td><input type="checkbox" id="${tabList[i].id}" class="checkSelect" ${tabList[i].check} onclick="checkHandler(${tabList[i].id})"></td>  
+                    <td><input type="checkbox" id="${tabList[i].id}" class="checkSelect" ${tabList[i].check} onclick="checkHandler('${tabList[i].id}')"></td>  
                     <td>${tabList[i].operacao}</td>
                     <td>${tabList[i].datavencto}</td>
                     <td>${tabList[i].valornominal}</td>
@@ -223,18 +244,55 @@ $('#allBoxes').on('click', function() {
 function editBtn(){
     let toedit_op = [];
 
+    // Resetar inputs
+    $('input[class="form-control"]').val('');
+
+    // Verificar os registros selecionados
     tableData.forEach((operation) => {
         if(operation.check == 'checked'){
             toedit_op.push(operation);
         }
     });
 
+    // Nenhum registro selecionado
     if(toedit_op.length < 1){
         $('#toastEditOp').toast('show');
     }else{
         $('#modalEditOp').modal('show');
-        if(toedit_op.length == 1) $('#numberSelect').html(`<small class='text-muted'>${toedit_op.length} operação selecionada</small>`);
-        else $('#numberSelect').html(`<small class='text-muted'>${toedit_op.length} operações selecionadas</small>`);
+        if(toedit_op.length == 1) $('.numberSelect').html(`${toedit_op.length} operação selecionada`);
+        else $('.numberSelect').html(`${toedit_op.length} operações selecionadas`);
     }
+
+    // Preparação do objeto para salvar
+    $('#btnSalvarVenc').unbind('click').on('click', function(){
+        toedit_op.forEach((opedit) => {            
+            let data = formatDate(opedit.datavencto);
+            opedit.datavencto   = $('#datavencNova').val()      != '' ? $('#datavencNova').val()    : data;
+            opedit.operacao     = $('#tipoopNova').val()        != '' ? $('#tipoopNova').val()      : opedit.operacao;
+            opedit.valornominal = $('#valornominalNova').val()  != '' ? $('#valornominalNova').val(): opedit.valornominal;                    
+        })   
+        // Envia as informações para o controller 
+        $.ajax({
+            type: 'post',
+            url: '/clientes/atualizarOperacoes',
+            data: {ops_json: toedit_op},
+            success: function(data){
+                document.location.reload();
+            }
+        })
+    })
+}
+
+function formatDate(data_in){
+    if(data_in.match(/\d{2}\/\d{2}\/\d{4}/)){
+        let dia  = data_in.split("/")[0];
+        let mes  = data_in.split("/")[1];
+        let ano  = data_in.split("/")[2];
+
+        return ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+    }else{
+        return data_in;
+    }
+
 }
 </script>

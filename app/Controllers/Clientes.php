@@ -1,6 +1,7 @@
 <?php namespace App\Controllers; 
 
 use App\Models\Cliente;
+use App\Models\Operacao;
 
 class Clientes extends BaseController
 {
@@ -41,7 +42,7 @@ class Clientes extends BaseController
         echo view('templates/footer', $data);  
     }
 
-    // Página para visualização/edição de registros
+    // Página para visualização/edição de operações
     public function listarClientes()
     {
         $cliente = new Cliente();
@@ -69,7 +70,7 @@ class Clientes extends BaseController
 		echo view('templates/footer', $data);
     }
 
-    // Receberá a tabela e levará ao model
+    // Receberá a tabela de importação e levará ao model
     public function upload()
     {        
         
@@ -181,6 +182,27 @@ class Clientes extends BaseController
 
             return redirect()->to('/clientes/cadastro');
         }            
+    }
+
+    // Receberá informações de atualização de operações e levará ao model
+    public function atualizarOperacoes()
+    {
+        $operacao = new Operacao();
+
+        $array_post = $this->request->getPost();
+        $cod_banco = session()->get('cod_banco');
+        
+        try {            
+            $operacao->alterar_operacoes($cod_banco, $array_post);    
+            $sucesso = TRUE;            
+        } catch (\Exception $err) {
+            session()->setFlashdata('errorMsg', $err->getMessage());
+            $sucesso = FALSE;
+        }
+
+        if($sucesso){
+            session()->setFlashdata('successMsg', 'Cadastro enviado com sucesso');  
+        }
     }
 	//--------------------------------------------------------------------
 
