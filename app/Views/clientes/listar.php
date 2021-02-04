@@ -198,7 +198,7 @@ function buildTable(){
     tabList = data.querySet;
 
     for (var i = 1 in tabList) {
-        //Keep in mind we are using "Template Litterals to create rows"
+        //Usando "Template Litterals" para fazer as linhas
         var row =  `<tr>
                     <td><input type="checkbox" id="${tabList[i].id}" class="checkSelect" ${tabList[i].check} onclick="checkHandler('${tabList[i].id}')"></td>  
                     <td>${tabList[i].operacao}</td>
@@ -283,6 +283,7 @@ function editBtn(){
     })
 }
 
+// Manipular qualquer formato de data entre as padrões
 function formatDate(data_in){
     if(data_in.match(/\d{2}\/\d{2}\/\d{4}/)){
         let dia  = data_in.split("/")[0];

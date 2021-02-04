@@ -36,7 +36,7 @@ class Operacao extends Model
     /**
      * @method string
      * 
-     * Recebe operações do controller e envia para a API
+     * Recebe operações do controller e envia para a API para alteração
      */
     public function alterar_operacoes($cod_banco, $array_op)
     {
