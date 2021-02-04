@@ -84,6 +84,30 @@ class Listas extends BaseController
 			session()->setFlashdata('errorMsg', 'Houve um erro... '.$err->getMessage());
 		}
 	}
+
+	/**
+	 * @method void
+	 * 
+	 * Controller responsável por manipular a página (view) de relatório de envios
+	 */
+	public function relatorios()
+	{
+		$lista = new Lista();
+		$cod_banco = session()->get('cod_banco');
+		
+        $data = [
+			"title" 		=> "Gerencial - EudesRo",
+			"name" 			=> session()->get('name'),
+			"menuActiveID" 	=> "listas",
+			"errorMsg" 		=> session()->get('errorMsg'),
+			"successMsg" 	=> session()->get('successMsg'),
+			"envios"		=> $lista->relatorios($cod_banco)						
+		];
+
+		echo view('templates/header', $data);
+		echo view('Listas/relatorios', $data);
+		echo view('templates/footer', $data);
+	}
 	//--------------------------------------------------------------------
 
 }

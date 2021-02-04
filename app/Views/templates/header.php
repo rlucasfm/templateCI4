@@ -23,12 +23,17 @@
     <!-- CSS MAIN particular -->
     <link href="/static/css/main.css" rel="stylesheet">
 
+    <!-- CSS para Impressão -->
+    <link rel="stylesheet" type="text/css" href="/static/css/print.min.css">
+
     <!-- LOAD JQUERY FIRST -->
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <!-- Bootstrap core JavaScript-->    
     <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Plugin própria para Mascaras -->
     <script src="/static/js/mask.js"></script>
+    <!-- Lib para impressão -->
+    <script src="/static/js/print.min.js"></script>
 
 </head>
 
@@ -107,7 +112,8 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Listas:</h6>
-                        <a class="collapse-item" href="/Listas/novaLista">Gerenciamento de Listas</a>                        
+                        <a class="collapse-item" href="/Listas/novaLista">Gerenciamento de Listas</a>
+                        <a class="collapse-item" href="/Listas/relatorios">Relatório de Envio</a>                        
                     </div>
                 </div>
             </li>

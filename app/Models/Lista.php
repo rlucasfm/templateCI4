@@ -175,6 +175,23 @@ class Lista extends Model
         } 
     }
 
+    /** 
+     * @method json
+     * 
+     * Busca o relatório de envios da API
+     */    
+    public function relatorios($cod_banco)
+    {     
+        try {
+            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Relatorio/'.$cod_banco, 'GET');
+            $lista_array = json_decode($response)->result;
+            return($lista_array[0]);
+        } catch (\Exception $err) {
+            throw new \Exception($err->getMessage());
+        }
+                
+    }
+
     /**
      * @method string
      * 
