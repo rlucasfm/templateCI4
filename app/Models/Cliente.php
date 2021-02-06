@@ -168,7 +168,7 @@ class Cliente extends Model
         } 
 
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, 'POST', json_encode($array_tabela));                
+            $response = $this->enviar_api(APIURL, 'Cliente/'.$cod_banco, 'POST', json_encode($array_tabela));                
             return $response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());
@@ -183,7 +183,7 @@ class Cliente extends Model
     public function listarAPI($cod_banco)
     {
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Cliente/'.$cod_banco, 'GET');
+            $response = $this->enviar_api(APIURL, 'Cliente/'.$cod_banco, 'GET');
             $lista_array = json_decode($response)->result;
             return($lista_array[0]);
         } catch (\Exception $err) {
@@ -196,8 +196,8 @@ class Cliente extends Model
      * 
      * Responsável unicamente por enviar JSON para a API REST DataSnap
      */
-    private function enviar_api($uri, $serverMethod, $requestType, $json = NULL)
-    {
+    private function enviar_api($uri = '1', $serverMethod, $requestType, $json = NULL)
+    {        
         // Instanciar cURL para comunicar com a API
         $options = [
             'baseURI' => $uri,

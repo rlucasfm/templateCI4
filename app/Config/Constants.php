@@ -25,6 +25,15 @@ defined('COMPOSER_PATH') || define('COMPOSER_PATH', ROOTPATH . 'vendor/autoload.
 
 /*
 |--------------------------------------------------------------------------
+| API URL
+|--------------------------------------------------------------------------
+|
+| Here goes the API URL so it can be accessed everywhere
+*/
+define('APIURL', 'http://localhost:8077/datasnap/rest/TSM/');
+
+/*
+|--------------------------------------------------------------------------
 | Timing Constants
 |--------------------------------------------------------------------------
 |

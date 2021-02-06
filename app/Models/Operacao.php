@@ -41,7 +41,7 @@ class Operacao extends Model
     public function alterar_operacoes($cod_banco, $array_op)
     {
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Operacao/'.$cod_banco, 'POST', json_encode($array_op));                
+            $response = $this->enviar_api(APIURL, 'Operacao/'.$cod_banco, 'POST', json_encode($array_op));                
             return $response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());

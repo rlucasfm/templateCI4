@@ -118,7 +118,7 @@ class Lista extends Model
     public function listarAPI($cod_banco)
     {     
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Lista/'.$cod_banco, 'GET');
+            $response = $this->enviar_api(APIURL, 'Lista/'.$cod_banco, 'GET');
             $lista_array = json_decode($response)->result;
             return($lista_array[0]);
         } catch (\Exception $err) {
@@ -136,7 +136,7 @@ class Lista extends Model
     {
         $cod_banco = $dados['id_banco'];
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Lista/'.$cod_banco, 'POST', json_encode($dados));
+            $response = $this->enviar_api(APIURL, 'Lista/'.$cod_banco, 'POST', json_encode($dados));
             return json_decode($response)->result[0]->Response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());
@@ -153,7 +153,7 @@ class Lista extends Model
     {
         $id_lista = $dados['id'];
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Lista/'.$id_lista, 'PUT', json_encode($dados));
+            $response = $this->enviar_api(APIURL, 'Lista/'.$id_lista, 'PUT', json_encode($dados));
             return json_decode($response)->result[0]->Response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());
@@ -168,7 +168,7 @@ class Lista extends Model
     public function apagarAPI($id_lista)
     {
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Lista/'.$id_lista, 'DELETE');            
+            $response = $this->enviar_api(APIURL, 'Lista/'.$id_lista, 'DELETE');            
             return json_decode($response)->result[0]->Response;
         } catch (\Exception $err) {
             throw new \Exception($err->getMessage());
@@ -183,7 +183,7 @@ class Lista extends Model
     public function relatorios($cod_banco)
     {     
         try {
-            $response = $this->enviar_api('http://localhost:8077/datasnap/rest/TSM/', 'Relatorio/'.$cod_banco, 'GET');
+            $response = $this->enviar_api(APIURL, 'Relatorio/'.$cod_banco, 'GET');
             $lista_array = json_decode($response)->result;
             return($lista_array[0]);
         } catch (\Exception $err) {
