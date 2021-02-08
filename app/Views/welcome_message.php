@@ -214,6 +214,7 @@
 			<li class="menu-item hidden"><a
 					href="https://github.com/codeigniter4/CodeIgniter4/blob/master/CONTRIBUTING.md" target="_blank">Contribute</a>
 			</li>
+			<li class="menu-item hidden"><a href="/logout">Logout</a></li>
 		</ul>
 	</div>
 

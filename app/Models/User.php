@@ -25,7 +25,6 @@ class User extends Model
                 $sessionData = [
                     "email" => $email,
                     "name" => $user->name,
-                    "cod_banco" => $user->cod_banco
                 ];
     
                 $session = session();
